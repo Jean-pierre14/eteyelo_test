@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mysqli crud</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/assets/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h3><%= title %></h3>
+        <a href="/add" data-toggle="tooltip" title="Hover" class="btn btn-sm btn-primary mt-1 mb-2">Add user <i class="fa fa-user-circle"></i></a>
+        <div class="row p-0">
+            <div class="col-md-4 m-0">
+                <form action="/search" method="post">
+                    <div class="form-inline">
+                        <input type="search" name="search" id="search" placeholder="Search..." class="form-control">
+                        <input type="submit" value="Search" class="btn btn-success">
+                    </div>
+                </form>
+                <h3>Users carousel</h3>
+                <div id="demo" class="carousel slide" data-ride="carousel">
+
+                    <!-- Indicators -->
+                    <ul class="carousel-indicators">
+                      <li data-target="#demo" data-slide-to="0" class="active"></li>
+                      <li data-target="#demo" data-slide-to="1"></li>
+                      <li data-target="#demo" data-slide-to="2"></li>
+                    </ul>
+                  
+                    <!-- The slideshow -->
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <img src="/assets/images/img.jpg" alt="Los Angeles" class="img-fluid">
+                      </div>
+                      <div class="carousel-item">
+                        <img src="/assets/images/img.jpg" alt="Chicago" class="img-fluid">
+                      </div>
+                      <div class="carousel-item">
+                        <img src="/assets/images/img.jpg" alt="New York" class="img-fluid">
+                      </div>
+                    </div>
+                  
+                    <!-- Left and right controls -->
+                    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                      <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#demo" data-slide="next">
+                      <span class="carousel-control-next-icon"></span>
+                    </a>
+                  
+                  </div>
+            </div>
+            <div class="col-md-8 m-0">
+                <div id="result"></div>
+                <table id="table-1" class="table table-sm table-dark table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th> Name </th>
+                            <th> Email </th>
+                            <th> Phone </th>
+                            <th> Events </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach( function(user) { %>
+                            <tr>
+                                <td> <%= user.name %> </td>
+                                <td> <%= user.email %> </td>
+                                <td> <%= user.phone_no %> </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="edit/<%= user.id %>" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>
+                                        <a href="delete/<%= user.id %>"class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% })%>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script src="/assets/js/jquery-3.4.0.min.js"></script>
+    <script src="/assets/js/core/popper.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/all.min.js"></script>
+    <script>
+        $(document).ready( function(){
+            $('#search').keyup( function(){
+                let txt = $(this).val();
+                
+                if (txt != '') {
+                    $('#table-1').hide(500);
+                    $('#table-2').show(500);
+
+                    $.ajax({
+                        url: 'fetch.php',
+                        method: 'post',
+                        data: {txt: txt},
+                        success: function(data){
+                            $('#result').html(data)
+                        }
+                    })
+                }else{
+                    $('#table-1').show(500);
+                    $('#table-2').hide(500);
+                    $('#result').html('');
+                }
+            })
+        });
+    </script>
+</body>
+</html>
