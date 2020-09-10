@@ -8,10 +8,9 @@ class App extends Component {
     this.getUsers();
   }
   getUsers = _ =>{
-    fetch('http://localhost:7000/api/')
-    .then(res => res.json())
-    .then(res => this.setState({ users: res.data }))
-    .catch(err => console.error(err))
+    fetch('api/')
+      .then(res => res.json())
+      .then(users => this.setState({users}, () => console.log('Users fetch', users)));
   }
   renderUsers = ({id, name}) => <div key={id}>{name}</div>
   render() {
@@ -19,7 +18,12 @@ class App extends Component {
 
     return(
       <div className="App">
-        {users.map(this.renderUsers)}
+        <h3>Users</h3>
+        <ul>
+          {this.state.users.map(user => 
+            <li key={user.id}>{user.name}</li>
+          )}
+        </ul>
       </div>
    ) 
   }
